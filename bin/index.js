@@ -9,6 +9,10 @@ const fs = require('fs');
 const program = require('commander');
 // 一个通用交互式命令行UI的集合
 const inquirer = require('inquirer');
+// 功能如其名 ↓
+const downloadGitRepo = require('download-git-repo');
+// 给终端字符串上色~
+const chalk = require('chalk');
 // 获取package.json拿一下版本号
 const package = require('../package.json');
 
@@ -31,22 +35,39 @@ program
             const done = this.async();
             setTimeout(() => {
               if (!input || typeof input !== 'string') {
-                done('You need to provide a project name.');
+                done(chalk.redBright('You need to provide a project name.'));
                 return;
               }
               const dir = `${cwd}\\${input}`;
               if (fs.existsSync(dir)) {
-                done(`'${input}' already exists in the current directory, Please use a different name.`);
+                done(chalk.redBright(`'${input}' already exists in the current directory, Please use a different name.`));
                 return;
               }
               done(null, true);
             }, 0);
           }
         }
-      ])
-      .then(res => {
+      ]).then(res => {
         const { name } = res;
-        console.log(`Ready to create '${name}'...`);
+        console.log(chalk.cyanBright('Downloading template...'));
+        downloadGitRepo(
+          'Innermadness/private-scaffold',
+          `${cwd}\\${name}`,
+          false,
+          err => {
+            if (err) {
+              console.log(chalk.redBright('Something went wrong during downloading, please retry.'));
+            } else {
+              console.log(chalk.greenBright('Success~'));
+              console.log('');
+              console.log(`  Now you can:`);
+              console.log(chalk.cyanBright(`    $ cd ${name}`));
+              console.log(chalk.cyanBright(`    $ npm install`));
+              console.log(chalk.cyanBright(`    $ npm start`));
+              console.log('');
+            }
+          }
+        );
       });
   });
 
