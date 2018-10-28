@@ -1,7 +1,7 @@
 {
   "name": "private-scaffold-cli",
   "version": "1.0.0",
-  "description": "搞个自用的cli",
+  "description": "A simple cli demo~",
   "main": "index.js",
   "repository": "git@github.com:Innermadness/private-scaffold-cli.git",
   "author": "Innermadness <380361138@qq.com>",
@@ -11,6 +11,8 @@
     "mycli": "./bin/index.js"
   },
   "dependencies": {
-    "commander": "^2.19.0"
+    "commander": "^2.19.0",
+    "download-git-repo": "^1.1.0",
+    "inquirer": "^6.2.0"
   }
 }
